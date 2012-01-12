@@ -1,0 +1,158 @@
+NAME
+    bucketsort - bucket sort
+
+SYNOPSIS
+      #include "bucketsort.h"
+      int bucketsort(
+        void **base,
+        size_t nmemb,
+        keyaccessor_t key
+        indexer_t     idx,
+        comparator_t  cmp
+      );
+
+DESCRIPTION
+    The bucketsort() is an implementations of bucket sort.
+
+  base
+    The reference to the array of pointers to the element (or integers whose
+    size equals to that of pointer) to be sorted in-place.
+
+  nmemb
+    The nember of elements in the array.
+
+  key
+    The function pointer which takes the reference to the array element and
+    returns the reference to the key.
+
+      void *key(void *element);
+
+    When "NULL" the default function is used which is defined as:
+
+      inline void *identity(void *v)
+      {
+        return v;
+      }
+
+  idx
+    The function pointer which takes the reference to the key and the
+    recursion level of the caller and returns the integer value between 0
+    and 255, which is the bucket id.
+
+    When "NULL" the default function is used which is defined as:
+
+      inline int charAt(void *v, size_t i)
+      {
+        char *s = (char *) v;
+        return s ? strlen(s) > i ? s[i] : 0 : 0;
+      };
+
+    In other words, default acts the same as the MSD radix sort with
+    variable lengths.
+
+  cmp
+    The Function pointer which compares two keys. This is needed to allow
+    elements with same keys. Its signature is the same as the one you pass
+    to "qsort()", "mergesort()" and "heapsort()" in libc.
+
+    When "NULL", it defaults to "strcmp()".
+
+EXAMPLE
+    See main.c which is included in the distro.
+
+IMPLEMENTATION DETAILS
+    The bucket is implemented as a queue by linked lists. The whole array is
+    converted to the linked list before sorted then written back to the
+    array. If you like you can use the list sorter directly as:
+
+      list_t bucketsort(
+        list_t head,
+        size_t nmemb,
+        keyaccessor_t key
+        indexer_t     idx,
+        comparator_t  cmp
+      );
+
+    where:
+
+      typedef struct {
+        void *car, *cdr;
+      } _cons_t, *list_t;
+
+BENCHMARK
+  Mac OS X v10.7.2/iMac 12,2/Core i7
+        % /usr/bin/time -l ./bucketsort 1e7.txt > /dev/null
+                7.09 real         6.93 user         0.15 sys
+         402980864  maximum resident set size
+                 0  average shared memory size
+                 0  average unshared data size
+                 0  average unshared stack size
+             98408  page reclaims
+                 0  page faults
+                 0  swaps
+                 0  block input operations
+                 0  block output operations
+                 0  messages sent
+                 0  messages received
+                 0  signals received
+                 0  voluntary context switches
+               183  involuntary context switches
+        % /usr/bin/time -l /usr/bin/sort 1e7.txt > /dev/null
+              150.39 real       150.10 user         0.25 sys
+         559497216  maximum resident set size
+                 0  average shared memory size
+                 0  average unshared data size
+                 0  average unshared stack size
+            136606  page reclaims
+                 0  page faults
+                 0  swaps
+                 1  block input operations
+                 1  block output operations
+                 0  messages sent
+                 0  messages received
+                 0  signals received
+                 3  voluntary context switches
+               887  involuntary context switches
+        % /usr/bin/time -l /usr/bin/perl -e 'print sort <>' 1e7.txt > /dev/null
+               26.87 real        25.96 user         0.88 sys
+        1579208704  maximum resident set size
+                 0  average shared memory size
+                 0  average unshared data size
+                 0  average unshared stack size
+            434812  page reclaims
+               126  page faults
+                 0  swaps
+                18  block input operations
+                 6  block output operations
+                 0  messages sent
+                 0  messages received
+                 0  signals received
+                46  voluntary context switches
+               226  involuntary context switches
+
+  Ubuntu 11.10 AMD64 / VMWare@iMac
+        $ time ./bucketsort 1e7.txt > /dev/null 
+        real    0m9.059s
+        user    0m8.825s
+        sys     0m0.208s
+        $ time sort 1e7.txt > /dev/null 
+        real    0m33.136s
+        user    0m31.514s
+        sys     0m1.528s
+
+RETURN VALUES
+    The bucketsort() function returns the value 0 if successful; otherwise
+    the value -1 is returned and the global variable errno is set to
+    indicate the error.
+
+ERRORS
+  ENOMEM
+    When "bucketsort()" fails to allocate the memory needed to build the
+    list, which is exactly twice the size of the original array since each
+    element takes two pointers.
+
+SEE ALSO
+    sort(3), qsort(3), megesort(3), heapsort(3), radixsort(3)
+
+    <http://en.wikipedia.org/wiki/Bucket_sort>
+
