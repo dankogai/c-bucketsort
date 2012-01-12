@@ -6,7 +6,7 @@ SYNOPSIS
       int bucketsort(
         void **base,
         size_t nmemb,
-        keyaccessor_t key
+        keyaccessor_t key,
         indexer_t     idx,
         comparator_t  cmp
       );
