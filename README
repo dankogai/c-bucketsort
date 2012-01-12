@@ -80,6 +80,10 @@ IMPLEMENTATION DETAILS
       } _cons_t, *list_t;
 
 BENCHMARK
+    1e7.txt is created as:
+
+      perl -MList::Util=shuffle 'print shuffle 1..1e7' > 1e7.txt
+
   Mac OS X v10.7.2/iMac 12,2/Core i7
         % /usr/bin/time -l ./bucketsort 1e7.txt > /dev/null
                 7.09 real         6.93 user         0.15 sys
