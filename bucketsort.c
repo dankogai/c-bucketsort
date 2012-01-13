@@ -1,5 +1,5 @@
 /*
- * $Id: bucketsort.c,v 0.2 2012/01/13 09:59:13 dankogai Exp $
+ * $Id: bucketsort.c,v 0.2 2012/01/13 09:59:13 dankogai Exp dankogai $
  *
  *  Licensed under the MIT license.
  *  http://www.opensource.org/licenses/mit-license.php

@@ -1,5 +1,5 @@
 /*
- * $Id: benchmark.c,v 0.1 2012/01/13 12:39:53 dankogai Exp dankogai $
+ * $Id: bench-str.c,v 0.2 2012/01/13 14:51:39 dankogai Exp dankogai $
  */
 
 #include <stdio.h>
@@ -49,8 +49,9 @@ int main(int argc, char **argv)
     radixsort(lines, lcur, NULL, 0);
 #elif defined(SRADIXSORT)
     sradixsort(lines, lcur, NULL, 0);
-#else
+#elif defined(BUCKETSORT)
     bucketsort((void **) lines, lcur, NULL, NULL, NULL);
+#else
 #endif
     for (i = 0; i < lcur; i++)
 	printf("%s\n", lines[i]);
