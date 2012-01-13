@@ -98,7 +98,7 @@ ACHILLES'S HEEL AND ITS SHIELD
     after "BUCKETSORT_DEPTH", 256 in bucketsort.h. The merge sort used there
     is defined as:
 
-      list_t bucketsort_l(
+      list_t mergesort_l(
         list_t        src,
         comparator_t  cmp
       );
