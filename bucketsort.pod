@@ -6,8 +6,8 @@ bucketsort - bucket sort
 
   #include "bucketsort.h"
   int bucketsort(
-    void **base,
-    size_t nmemb,
+    void        **base,
+    size_t        nmemb,
     keyaccessor_t key,
     indexer_t     idx,
     comparator_t  cmp
@@ -63,7 +63,12 @@ The Function pointer which compares two keys.  This is needed to allow
 elements with same keys.  Its signature is the same as the one you
 pass to C<qsort()>, C<mergesort()> and C<heapsort()> in libc.
 
-When C<NULL>, it defaults to C<strcmp()>.
+When C<NULL>, it defaults to:
+
+  inline int stringcmp(void *a, void *b)
+  {
+    return strcmp(a ? a : "", b ? b : "");
+  }
 
 =head1 EXAMPLE
 
@@ -71,11 +76,13 @@ See main.c which is included in the distro.
 
 =head1 IMPLEMENTATION DETAILS
 
-The bucket is implemented as a queue by linked lists.  The whole array is converted to the linked list before sorted then written back to the array.  If you like you can use the list sorter directly as:
+The bucket is implemented as a queue by linked lists.  The whole array
+is converted to the linked list before sorted then written back to the
+array.  If you like you can use the list sorter directly as:
 
-  list_t bucketsort(
-    list_t head,
-    size_t nmemb,
+  list_t bucketsort_l(
+    list_t        src,
+    size_t        nmemb,
     keyaccessor_t key
     indexer_t     idx,
     comparator_t  cmp
@@ -86,6 +93,27 @@ where:
   typedef struct {
     void *car, *cdr;
   } _cons_t, *list_t;
+
+=head1 ACHILLES'S HEEL AND ITS SHIELD
+
+The obvious drawback of the recursive bucket sort is that it recurses
+deeply when it comes accross data (strings) with long common prefix.
+Given:
+
+  aa..a  # "a" x n
+  aa..aa # "a" x (n+1)
+
+It recurses n times.
+
+To cope with such cases, C<bucketsort()> now falls back to the merge
+sort after C<BUCKETSORT_DEPTH>, 256 in bucketsort.h.  The merge sort
+used there is defined as:
+
+  list_t mergesort_l(
+    list_t        src,
+    comparator_t  cmp
+  );
+
 
 =head1 BENCHMARK
 

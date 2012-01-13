@@ -1,5 +1,5 @@
 /*
- * $Id: bucketsort.c,v 0.1 2012/01/12 21:52:11 dankogai Exp dankogai $
+ * $Id: bucketsort.c,v 0.2 2012/01/13 09:59:13 dankogai Exp $
  *
  *  Licensed under the MIT license.
  *  http://www.opensource.org/licenses/mit-license.php
@@ -24,6 +24,8 @@ inline list_t shift(list_t * src)
 
 inline void enqueue(_queue_t * q, list_t l, list_t t)
 {
+    if (!l)
+	return;
     if (q->head) {
 	q->tail->cdr = l;
 	q->tail = l;
@@ -37,6 +39,8 @@ inline void enqueue(_queue_t * q, list_t l, list_t t)
 inline list_t dequeue(_queue_t * q)
 {
     list_t l = q->head;
+    if (!l)
+	return l;
     q->head = q->head->cdr;
     l->cdr = NULL;
     return l;
@@ -48,9 +52,39 @@ inline int charAt(void *v, size_t i)
     return s ? strlen(s) > i ? s[i] : 0 : 0;
 };
 
+inline int stringcmp(void *a, void *b)
+{
+    return strcmp(a ? a : "", b ? b : "");
+}
+
 inline void *identity(void *v)
 {
     return v;
+}
+
+inline list_t _merge(list_t h, list_t t, comparator_t cmp)
+{
+    _queue_t q = { NULL, NULL };
+    while (h && t) {
+	enqueue(&q, shift(cmp(h->car, t->car) < 0 ? &h : &t), NULL);
+    }
+    enqueue(&q, (h ? h : t), NULL);
+    return q.head;
+}
+
+list_t mergesort_l(list_t src, comparator_t cmp)
+{
+    if (!src || !src->cdr)
+	return src;
+    _queue_t qs[2] = { {NULL, NULL}
+    , {NULL, NULL}
+    };
+    size_t i;
+    for (i = 0; src; i++) {
+	enqueue(&qs[i & 1], shift(&src), NULL);
+    }
+    return _merge(mergesort_l(qs[0].head, cmp),
+		  mergesort_l(qs[1].head, cmp), cmp);
 }
 
 inline int allthesame(_queue_t q, comparator_t cmp)
@@ -78,7 +112,12 @@ inline _queue_t _bucketsort_q(_queue_t src, size_t depth,
     if (!idx)
 	idx = charAt;
     if (!cmp)
-	cmp = (comparator_t) strcmp;
+	cmp = stringcmp;
+    if (depth > BUCKETSORT_DEPTH) {
+	src.head = mergesort_l(head, cmp);
+	for (src.tail = src.head; src.tail->cdr; src.tail = src.tail->cdr);
+	return src;
+    }
     _queue_t buckets[BUCKETSIZ];
     size_t i;
     for (i = 0; i < BUCKETSIZ; i++)
@@ -107,7 +146,7 @@ list_t bucketsort_l(list_t src, keyaccessor_t key, indexer_t idx,
     return _bucketsort_q(q, 0, key, idx, cmp).head;
 }
 
-inline list_t array2list(void *a[], _cons_t lists[], size_t n)
+list_t array2list(void *a[], _cons_t lists[], size_t n)
 {
     size_t i;
     list_t l;
@@ -119,7 +158,7 @@ inline list_t array2list(void *a[], _cons_t lists[], size_t n)
     return lists;
 }
 
-inline void **list2array(list_t l, void **a, size_t n)
+void **list2array(list_t l, void **a, size_t n)
 {
     size_t i;
     for (i = 0; i < n && l; i++, l = l->cdr)

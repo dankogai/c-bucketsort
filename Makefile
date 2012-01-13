@@ -1,5 +1,5 @@
 #
-#  $Id: Makefile,v 0.1 2012/01/12 21:52:11 dankogai Exp dankogai $
+#  $Id: Makefile,v 0.1 2012/01/12 21:52:11 dankogai Exp $
 #
 #  Licensed under the MIT license.
 #  http://www.opensource.org/licenses/mit-license.php
