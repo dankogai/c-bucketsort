@@ -119,7 +119,7 @@ used there is defined as:
 
 1e7.txt is created as:
 
-  perl -MList::Util=shuffle 'print shuffle 1..1e7' > 1e7.txt
+  perl -MList::Util=shuffle -lE 'say for shuffle 1..1e7' > 1e7.txt
 
 =head2 Mac OS X v10.7.2/iMac 12,2/Core i7
 
