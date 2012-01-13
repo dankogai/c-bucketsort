@@ -121,15 +121,34 @@ used there is defined as:
 
   perl -MList::Util=shuffle -lE 'say for shuffle 1..1e7' > 1e7.txt
 
+
 =head2 Mac OS X v10.7.2/iMac 12,2/Core i7
 
-    % /usr/bin/time -l ./bucketsort 1e7.txt > /dev/null
-            7.09 real         6.93 user         0.15 sys
-     402980864  maximum resident set size
+    % gcc -DQSORT -W -Wall -O2 benchmark.c
+    % /usr/bin/time -l env LC_ALL=C ./a.out 1e7.txt > /dev/null
+    5.49 real         5.34 user         0.15 sys
+     243015680  maximum resident set size
              0  average shared memory size
              0  average unshared data size
              0  average unshared stack size
-         98408  page reclaims
+         59460  page reclaims
+             0  page faults
+             0  swaps
+             0  block input operations
+             2  block output operations
+             0  messages sent
+             0  messages received
+             0  signals received
+             0  voluntary context switches
+            42  involuntary context switches
+    % gcc -DMERGESORT -W -Wall -O2 benchmark.c
+    % /usr/bin/time -l env LC_ALL=C ./a.out 1e7.txt > /dev/null
+            4.85 real         4.66 user         0.18 sys
+     323014656  maximum resident set size
+             0  average shared memory size
+             0  average unshared data size
+             0  average unshared stack size
+         79247  page reclaims
              0  page faults
              0  swaps
              0  block input operations
@@ -138,50 +157,208 @@ used there is defined as:
              0  messages received
              0  signals received
              0  voluntary context switches
-           183  involuntary context switches
-    % /usr/bin/time -l /usr/bin/sort 1e7.txt > /dev/null
-          150.39 real       150.10 user         0.25 sys
-     559497216  maximum resident set size
+            43  involuntary context switches
+    % gcc -DHEAPSORT -W -Wall -O2 benchmark.c
+    % /usr/bin/time -l env LC_ALL=C ./a.out 1e7.txt > /dev/null
+           10.21 real        10.05 user         0.15 sys
+     243011584  maximum resident set size
              0  average shared memory size
              0  average unshared data size
              0  average unshared stack size
-        136606  page reclaims
+         59459  page reclaims
              0  page faults
              0  swaps
-             1  block input operations
+             0  block input operations
+             0  block output operations
+             0  messages sent
+             0  messages received
+             0  signals received
+             0  voluntary context switches
+            34  involuntary context switches
+    % gcc -DRADIXSORT -W -Wall -O2 benchmark.c
+    % /usr/bin/time -l env LC_ALL=C ./a.out 1e7.txt > /dev/null
+        7.78 real         7.62 user         0.15 sys
+     243023872  maximum resident set size
+             0  average shared memory size
+             0  average unshared data size
+             0  average unshared stack size
+         59462  page reclaims
+             0  page faults
+             0  swaps
+             0  block input operations
              1  block output operations
              0  messages sent
              0  messages received
              0  signals received
-             3  voluntary context switches
-           887  involuntary context switches
-    % /usr/bin/time -l /usr/bin/perl -e 'print sort <>' 1e7.txt > /dev/null
-           26.87 real        25.96 user         0.88 sys
-    1579208704  maximum resident set size
+             0  voluntary context switches
+            63  involuntary context switches
+    % gcc -DSRADIXSORT -W -Wall -O2 benchmark.c
+    % /usr/bin/time -l env LC_ALL=C ./a.out 1e7.txt > /dev/null
+            7.68 real         7.48 user         0.19 sys
+     323026944  maximum resident set size
              0  average shared memory size
              0  average unshared data size
              0  average unshared stack size
-        434812  page reclaims
-           126  page faults
+         78994  page reclaims
+             0  page faults
              0  swaps
-            18  block input operations
-             6  block output operations
+             0  block input operations
+             0  block output operations
              0  messages sent
              0  messages received
              0  signals received
-            46  voluntary context switches
-           226  involuntary context switches
+             0  voluntary context switches
+            44  involuntary context switches
+    % gcc -W -Wall -O2 benchmark.c
+    % /usr/bin/time -l env LC_ALL=C ./a.out 1e7.txt > /dev/null
+            9.37 real         9.17 user         0.20 sys
+     402980864  maximum resident set size
+             0  average shared memory size
+             0  average unshared data size
+             0  average unshared stack size
+         98786  page reclaims
+             0  page faults
+             0  swaps
+             0  block input operations
+             2  block output operations
+             0  messages sent
+             0  messages received
+             0  signals received
+             0  voluntary context switches
+            32  involuntary context switches
+
+=head2 FreeBSD-8-STABLE-amd64/Core i5-2400
+
+    % gcc -DQSORT -W -Wall -O2 benchmark.c
+    % /usr/bin/time -l env LC_ALL=C ./a.out 1e7.txt > /dev/null
+            6.41 real         6.21 user         0.19 sys
+        185300  maximum resident set size
+             8  average shared memory size
+          1020  average unshared data size
+           128  average unshared stack size
+         72113  page reclaims
+             0  page faults
+             0  swaps
+             0  block input operations
+             0  block output operations
+             0  messages sent
+             0  messages received
+             0  signals received
+             1  voluntary context switches
+            72  involuntary context switches
+    % gcc -DMERGESORT -W -Wall -O2 benchmark.c
+    % /usr/bin/time -l env LC_ALL=C ./a.out 1e7.txt > /dev/null
+            4.86 real         4.69 user         0.16 sys
+        238220  maximum resident set size
+             8  average shared memory size
+          1021  average unshared data size
+           128  average unshared stack size
+         91645  page reclaims
+             0  page faults
+             0  swaps
+             0  block input operations
+             0  block output operations
+             0  messages sent
+             0  messages received
+             0  signals received
+             1  voluntary context switches
+            66  involuntary context switches
+    % gcc -DHEAPSORT -W -Wall -O2 benchmark.c
+    % /usr/bin/time -l env LC_ALL=C ./a.out 1e7.txt > /dev/null
+           10.31 real        10.09 user         0.21 sys
+        196488  maximum resident set size
+             7  average shared memory size
+          1018  average unshared data size
+           127  average unshared stack size
+         72114  page reclaims
+             0  page faults
+             0  swaps
+             0  block input operations
+             0  block output operations
+             0  messages sent
+             0  messages received
+             0  signals received
+             1  voluntary context switches
+           263  involuntary context switches
+    % gcc -DRADIXSORT -W -Wall -O2 benchmark.c
+    % /usr/bin/time -l env LC_ALL=C ./a.out 1e7.txt > /dev/null
+            7.46 real         7.25 user         0.21 sys
+        238240  maximum resident set size
+             8  average shared memory size
+          1018  average unshared data size
+           128  average unshared stack size
+         91650  page reclaims
+             0  page faults
+             0  swaps
+             0  block input operations
+             0  block output operations
+             0  messages sent
+             0  messages received
+             0  signals received
+             2  voluntary context switches
+           115  involuntary context switches
+    % gcc -DSRADIXSORT -W -Wall -O2 benchmark.c
+    % /usr/bin/time -l env LC_ALL=C ./a.out 1e7.txt > /dev/null
+            7.64 real         7.38 user         0.25 sys
+        238240  maximum resident set size
+             8  average shared memory size
+          1021  average unshared data size
+           128  average unshared stack size
+         91650  page reclaims
+             0  page faults
+             0  swaps
+             0  block input operations
+             0  block output operations
+             0  messages sent
+             0  messages received
+             0  signals received
+             2  voluntary context switches
+           119  involuntary context switches
+    % gcc -W -Wall -O2 benchmark.c
+    % /usr/bin/time -l env LC_ALL=C ./a.out 1e7.txt > /dev/null
+            9.41 real         9.20 user         0.21 sys
+        316512  maximum resident set size
+             8  average shared memory size
+          1020  average unshared data size
+           128  average unshared stack size
+        111185  page reclaims
+             0  page faults
+             0  swaps
+             0  block input operations
+             0  block output operations
+             0  messages sent
+             0  messages received
+             0  signals received
+             1  voluntary context switches
+           219  involuntary context switches
 
 =head2 Ubuntu 11.10 AMD64 / VMWare@iMac
 
-    $ time ./bucketsort 1e7.txt > /dev/null 
-    real    0m9.059s
-    user    0m8.825s
-    sys     0m0.208s
-    $ time sort 1e7.txt > /dev/null 
-    real    0m33.136s
-    user    0m31.514s
-    sys     0m1.528s
+  
+  $ LC_ALL=C time -v sort 1e7.txt > /dev/null 
+    Command being timed: "sort 1e7.txt"
+    User time (seconds): 10.48
+    System time (seconds): 0.34
+    Percent of CPU this job got: 99%
+    Elapsed (wall clock) time (h:mm:ss or m:ss): 0:10.84
+    Average shared text size (kbytes): 0
+    Average unshared data size (kbytes): 0
+    Average stack size (kbytes): 0
+    Average total size (kbytes): 0
+    Maximum resident set size (kbytes): 1952464
+    Average resident set size (kbytes): 0
+    Major (requiring I/O) page faults: 0
+    Minor (reclaiming a frame) page faults: 122227
+    Voluntary context switches: 1
+    Involuntary context switches: 31
+    Swaps: 0
+    File system inputs: 0
+    File system outputs: 154088
+    Socket messages sent: 0
+    Socket messages received: 0
+    Signals delivered: 0
+    Page size (bytes): 4096
+    Exit status: 0
 
 =head1 RETURN VALUES
 
