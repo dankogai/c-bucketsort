@@ -70,10 +70,11 @@ int main(int argc, char **argv)
 		EXIT("malloc failed");
 	}
 	int slen = strlen(buf);
-	lines[lcur] = (char *) malloc(slen);
+	if (slen > 0 && buf[slen - 1] == '\n')
+	    buf[slen - 1] = '\0';	// do not copy \n
+	lines[lcur] = strdup(buf);
 	if (!lines[lcur])
 	    EXIT("malloc failed");
-	strncpy(lines[lcur], buf, slen - 1);	// do not copy \n
     }
     size_t i;
     // for (i = 0; i < lcur; i++) printf("%s\n", lines[i]);
@@ -82,7 +83,7 @@ int main(int argc, char **argv)
 	printf("%s\n", lines[i]);
     {
 	for (i = 0; i < lcur; i++)
-	    free(lines[lcur]);
+	    free(lines[i]);
 	free(lines);
     }
     return 0;
