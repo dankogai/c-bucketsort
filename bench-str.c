@@ -12,6 +12,10 @@
 #include "bucketsort.h"
 #include "bucketsort.c"
 
+int cmp(const void *a, const void *b){
+    return strcmp(*(char **)a, *(char **)b);
+}
+
 int main(int argc, char **argv)
 {
     if (argc < 2)
@@ -40,11 +44,11 @@ int main(int argc, char **argv)
     }
     size_t i;
 #if defined(QSORT)
-    qsort(lines, lcur, sizeof(char *), strcmp);
+    qsort(lines, lcur, sizeof(char *), cmp);
 #elif defined(MERGESORT)
-    mergesort(lines, lcur, sizeof(char *), strcmp);
+    mergesort(lines, lcur, sizeof(char *), cmp);
 #elif defined(HEAPSORT)
-    heapsort(lines, lcur, sizeof(char *), strcmp);
+    heapsort(lines, lcur, sizeof(char *), cmp);
 #elif defined(RADIXSORT)
     radixsort(lines, lcur, NULL, 0);
 #elif defined(SRADIXSORT)
