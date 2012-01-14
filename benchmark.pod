@@ -9,6 +9,7 @@
 =over 2
 
 =item Mac OS X v10.7.2/iMac 12,2/Core i7
+
     % gcc -DNOSORT -W -Wall -O2 bench-num.c
     % /usr/bin/time -l ./a.out 1e7.txt > ! /dev/null
             1.55 real         1.50 user         0.05 sys
