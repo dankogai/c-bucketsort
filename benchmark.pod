@@ -27,6 +27,7 @@
              0  signals received
              0  voluntary context switches
              3  involuntary context switches
+
     % gcc -DQSORT -W -Wall -O2 bench-num.c
     % /usr/bin/time -l ./a.out 1e7.txt > ! /dev/null
             3.42 real         3.36 user         0.05 sys
@@ -44,6 +45,7 @@
              0  signals received
              0  voluntary context switches
              5  involuntary context switches
+
     % gcc -DMERGESORT -W -Wall -O2 bench-num.c
     % /usr/bin/time -l ./a.out 1e7.txt > ! /dev/null
             4.03 real         3.93 user         0.09 sys
@@ -61,6 +63,7 @@
              0  signals received
              0  voluntary context switches
             35  involuntary context switches
+
     % gcc -DHEAPSORT -W -Wall -O2 bench-num.c
     % /usr/bin/time -l ./a.out 1e7.txt > ! /dev/null
             8.04 real         7.98 user         0.05 sys
@@ -78,6 +81,7 @@
              0  signals received
              0  voluntary context switches
             35  involuntary context switches
+
     % gcc -DBUCKETSORT -W -Wall -O2 bench-num.c
     % /usr/bin/time -l ./a.out 1e7.txt > ! /dev/null
             3.84 real         3.73 user         0.11 sys
@@ -97,6 +101,23 @@
             17  involuntary context switches
 
 =item FreeBSD-8-STABLE-amd64/Core i5-2400
+    % gcc -DNOSORT -W -Wall -O2 bench-num.c
+    % /usr/bin/time -l ./a.out 1e7.txt > /dev/null
+            2.89 real         2.72 user         0.17 sys
+        124852  maximum resident set size
+             8  average shared memory size
+          1020  average unshared data size
+           128  average unshared stack size
+         52379  page reclaims
+             0  page faults
+             0  swaps
+             0  block input operations
+             0  block output operations
+             0  messages sent
+             0  messages received
+             0  signals received
+             1  voluntary context switches
+            39  involuntary context switches
 
     % gcc -DQUICKSORT -W -Wall -O2 bench-num.c
     /usr/bin/time -l ./a.out 1e7.txt > /dev/null
@@ -115,6 +136,7 @@
              0  signals received
              1  voluntary context switches
             61  involuntary context switches
+
     % gcc -DMERGESORT -W -Wall -O2 bench-num.c
     /usr/bin/time -l ./a.out 1e7.txt > /dev/null
             4.91 real         4.77 user         0.14 sys
@@ -132,6 +154,7 @@
              0  signals received
              1  voluntary context switches
             75  involuntary context switches
+
     % gcc -DHEAPSORT -W -Wall -O2 bench-num.c
     /usr/bin/time -l ./a.out 1e7.txt > /dev/null
             7.84 real         7.64 user         0.19 sys
@@ -149,6 +172,7 @@
              0  signals received
              1  voluntary context switches
             98  involuntary context switches
+
     % gcc -DBUCKETSORT -W -Wall -O2 bench-num.c
             4.41 real         4.24 user         0.16 sys
         237444  maximum resident set size
@@ -192,6 +216,7 @@
              0  signals received
              0  voluntary context switches
              7  involuntary context switches
+
     % gcc -DQSORT -W -Wall -O2 bench-str.c
     % /usr/bin/time -l env LC_ALL=C ./a.out 1e7.txt > /dev/null
             8.80 real         8.65 user         0.15 sys
@@ -209,6 +234,7 @@
              0  signals received
              0  voluntary context switches
             16  involuntary context switches
+
     % gcc -DMERGESORT -W -Wall -O2 bench-str.c
     % /usr/bin/time -l env LC_ALL=C ./a.out 1e7.txt > /dev/null
             9.94 real         9.74 user         0.19 sys
@@ -226,6 +252,7 @@
              0  signals received
              0  voluntary context switches
             23  involuntary context switches
+
     % gcc -DHEAPSORT -W -Wall -O2 bench-str.c
     % /usr/bin/time -l env LC_ALL=C ./a.out 1e7.txt > /dev/null
             22.74 real        22.57 user         0.15 sys
@@ -243,6 +270,7 @@
              0  signals received
              0  voluntary context switches
             47  involuntary context switches
+
     % gcc -DRADIXSORT -W -Wall -O2 bench-str.c
     % /usr/bin/time -l env LC_ALL=C ./a.out 1e7.txt > /dev/null
             7.52 real         7.35 user         0.16 sys
@@ -260,6 +288,7 @@
              0  signals received
              0  voluntary context switches
             26  involuntary context switches
+
     % gcc -DSRADIXSORT -W -Wall -O2 bench-str.c
     % /usr/bin/time -l env LC_ALL=C ./a.out 1e7.txt > /dev/null
             7.48 real         7.29 user         0.19 sys
@@ -277,6 +306,7 @@
              0  signals received
              0  voluntary context switches
             25  involuntary context switches
+
     % gcc -DBUCKETSORT -W -Wall -O2 bench-str.c
     % /usr/bin/time -l env LC_ALL=C ./a.out 1e7.txt > /dev/null
         9.15 real         8.95 user         0.19 sys
@@ -314,6 +344,7 @@
              0  signals received
              1  voluntary context switches
            122  involuntary context switches
+
     % gcc -DQSORT -W -Wall -O2 bench-str.c
     % /usr/bin/time -l env LC_ALL=C ./a.out 1e7.txt > /dev/null
            10.57 real        10.31 user         0.24 sys
@@ -331,6 +362,7 @@
              0  signals received
              1  voluntary context switches
            366  involuntary context switches
+
     % gcc -DMERGESORT -W -Wall -O2 bench-str.c
     % /usr/bin/time -l env LC_ALL=C ./a.out 1e7.txt > /dev/null
            10.74 real        10.54 user         0.19 sys
@@ -348,6 +380,7 @@
              0  signals received
              1  voluntary context switches
            241  involuntary context switches
+
     % gcc -DHEAPSORT -W -Wall -O2 bench-str.c
     % /usr/bin/time -l env LC_ALL=C ./a.out 1e7.txt > /dev/null
            20.19 real        19.97 user         0.21 sys
@@ -365,6 +398,7 @@
              0  signals received
              1  voluntary context switches
            465  involuntary context switches
+
     % gcc -DRADIXSORT -W -Wall -O2 bench-str.c
     % /usr/bin/time -l env LC_ALL=C ./a.out 1e7.txt > /dev/null
             7.38 real         7.21 user         0.17 sys
@@ -382,6 +416,7 @@
              0  signals received
              1  voluntary context switches
            135  involuntary context switches
+
     % gcc -DSRADIXSORT -W -Wall -O2 bench-str.c
     % /usr/bin/time -l env LC_ALL=C ./a.out 1e7.txt > /dev/null
             7.48 real         7.21 user         0.27 sys
@@ -399,6 +434,7 @@
              0  signals received
              1  voluntary context switches
             85  involuntary context switches
+
     % gcc -DBUCKETSORT -W -Wall -O2 bench-str.c
     % /usr/bin/time -l env LC_ALL=C ./a.out 1e7.txt > /dev/null
             9.72 real         9.53 user         0.18 sys
