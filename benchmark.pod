@@ -101,6 +101,7 @@
             17  involuntary context switches
 
 =item FreeBSD-8-STABLE-amd64/Core i5-2400
+
     % gcc -DNOSORT -W -Wall -O2 bench-num.c
     % /usr/bin/time -l ./a.out 1e7.txt > /dev/null
             2.89 real         2.72 user         0.17 sys
