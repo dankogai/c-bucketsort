@@ -166,6 +166,19 @@ void **list2array(list_t l, void **a, size_t n)
     return a;
 }
 
+#if BUCKETSORT_PROFILE
+#include <sys/time.h>
+double dtime() {
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    return tv.tv_sec + tv.tv_usec / 1e6;
+}
+static double when;
+void ptime(){
+    fprintf(stderr, "%f sec\n", dtime()-when);
+}
+#endif
+
 int bucketsort(void **a, size_t n, keyaccessor_t key, indexer_t idx,
 	       comparator_t cmp)
 {
@@ -174,9 +187,15 @@ int bucketsort(void **a, size_t n, keyaccessor_t key, indexer_t idx,
 	perror("malloc failed!");
 	return -1;
     }
+    #if BUCKETSORT_PROFILE
+    when = dtime(); array2list(a, lists, n); ptime();
+    when = dtime(); list_t l = bucketsort_l(lists, key, idx, cmp); ptime();
+    when = dtime(); list2array(l, a, n); ptime();
+    #else
     array2list(a, lists, n);
     list_t l = bucketsort_l(lists, key, idx, cmp);
     list2array(l, a, n);
+    #endif
     free(lists);
     return 0;
 }

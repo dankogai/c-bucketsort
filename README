@@ -119,3 +119,10 @@ SEE ALSO
 
     <http://en.wikipedia.org/wiki/Bucket_sort>
 
+    Engineering Radix Sort
+      <http://usenix.org/publications/compsystems/1993/win_mcilroy.pdf>
+
+      Consequently this program is a generalized verion of the Program A in
+      the paper. Their program (and radixsort(1) in 4.4 BSD) is by limiting
+      its application to string sorting.
+

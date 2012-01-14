@@ -133,3 +133,15 @@ element takes two pointers.
 sort(3), qsort(3), megesort(3), heapsort(3), radixsort(3)
 
 L<http://en.wikipedia.org/wiki/Bucket_sort>
+
+=over 2
+
+=item Engineering Radix Sort
+
+L<http://usenix.org/publications/compsystems/1993/win_mcilroy.pdf>
+
+Consequently this program is a generalized verion of the Program A in
+the paper.  Their program (and radixsort(1) in 4.4 BSD) is by limiting
+its application to string sorting.
+
+=back
